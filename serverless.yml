@@ -1,0 +1,26 @@
+service: aws-flask-api
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-west-2
+
+functions:
+  app:
+    handler: handler.app
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    zip: true
+    slim: true
